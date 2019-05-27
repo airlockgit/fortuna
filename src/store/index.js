@@ -1,20 +1,31 @@
-import { createStore, applyMiddleware } from 'redux';
-import { combineReducers } from 'redux-immutable';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { userReducer, optionsReducer } from '../reducers/';
-import { Map } from 'immutable';
 
-const initialState = Map({
+const initialState = {
   user: {
     id: '',
     email: '',
-    username: 'Логин',
-    password: 'Пароль',
     token: '',
-    auth: false
+    auth: false,
+    name: {
+      value: '',
+      error: false,
+      message: ''
+    }, 
+    password: {
+      value: '',
+      error: false,
+      message: ''
+    },
+    check: false,
+    load: false,
+    click_count: 0,
+    click_count_max: 5,
+    time: 0,//seconds
   },
   options: ''
-});
+};
 
 const reducers = combineReducers({
   user: userReducer,
@@ -22,7 +33,7 @@ const reducers = combineReducers({
 });
 
 export const store = createStore(
-  userReducer,
+  reducers,
   initialState,
   applyMiddleware(thunk)
 );

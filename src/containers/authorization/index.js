@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import {Helmet} from "react-helmet";
 import { connect } from 'react-redux';
-import axios  from 'axios';
 import { BtnLogin } from '../../components/btn';
-import { setUser } from '../../actions';
+import * as createActions from '../../actions';
 import Preloader from '../../components/preloader';
 
 
@@ -12,23 +11,13 @@ class Authorization extends Component {
     super(props);
 
     this.state = {
-      username: {
-        value: '',
-        error: true,
-        message: ''
-      }, 
-      password: {
-        value: '',
-        error: true,
-        message: ''
+      name: {
+        value: ''
       },
-      check: false,
-      load: false,
-      click_count: 0,
-      stop_time: 0,//seconds
+      password: {
+        value: ''
+      }
     };
-
-    this.click_count_max = 3;//default
   }
 
   _HandleBackHome = ()=> {
@@ -36,61 +25,22 @@ class Authorization extends Component {
   }
 
   _HandleLogin = () => {
-    this.setState({check: true});
-    if(this.state.load) return;//ждем ответа
-    if(!this.load('check')) return;//если было много попыток
-    
-    if(!this.state.password.error && !this.state.username.error){
-      this.setState({load: true});//preloader
-      axios.get('/users',{
-        params: {
-          username: this.state.username.value,
-          password: this.state.password.value
-        }
-      })
-        .then(response => {
-          // handle success
-          let data = response.data;
-
-          console.log("Ответ сервера", data);
-          if(data.success){
-            console.log("Состояние юзера до", this.props.user);
-            this.props.setUser(data.user);
-            console.log("Состояние юзера после", this.props.user);
-            //this.props.history.push('/profile');
-          } else {
-            if(data.error.username) {
-              this.setState({username: {error: true, message: data.message}});//неверное имя
-            }
-  
-            if(data.error.password) {
-              let click_count = this.state.click_count + 1;
-
-              this.setState({password: {error: true, message: data.message}});//неверный пароль
-              this.setState({click_count});
-            }
-          }
-          this.load('off');
-        })
-        .catch(error => {
-          this.load('off');//preloader
-          //console.log(error);
-        })
-    }
+    this.props.setUserAsnc();
   }
 
   _onChangeInput = (e) => {
     const check = this.isChecked(e);
 
-    this.setState({
-        [e.target.name]: {
-          value: e.target.value,
-          error: check
-        }
-      });
+    this.props.setUserData({
+      [e.target.name]: {
+        value: e.target.value,
+        error: check
+      }
+    });
   }
 
   isChecked(e) {
+    console.log(e.target.value !== '');
     if(e.target.value !== '') {//минимум проверки
       return false;
     } else {
@@ -99,19 +49,15 @@ class Authorization extends Component {
   }
 
   isCheckedName(){
-    return (this.state.check && this.state.username.error) ? '_error' : '_red';
+    return (this.props.user.check && this.props.user.name.error) ? '_error' : '_red';
   }
 
   isCheckedPass(){
-    return (this.state.check && this.state.password.error) ? '_error' : '_red';
+    return (this.props.user.check && this.props.user.password.error) ? '_error' : '_red';
   }
 
   load(type){
     switch (type){
-      case 'on': this.setState({load: true});
-        break;
-      case 'off': this.setState({load: false, time: 0});
-          break;
       case 'check':
         if(this.state.click_count > this.click_count_max) {
           this.setState({load: true, time: 5, click_count: 0});
@@ -119,7 +65,6 @@ class Authorization extends Component {
         } else {
           return true;
         }
-          break;
       default: this.setState({load: false});
     }
   }
@@ -129,12 +74,12 @@ class Authorization extends Component {
       <div className="authorization">
         <p className="authorization__description">Войдити, что бы получить доступ к личному кабинету</p>
         <div>
-          <span className="authorization__alert-text">{this.state.username.message}</span>
-          <input className={'input-default input-default' + this.isCheckedName()} type="text" value={this.state.username.value} name="username" onChange={this._onChangeInput} placeholder="Логин"/>
+          <span className="authorization__alert-text">{this.props.user.name.message}</span>
+          <input className={'input-default input-default' + this.isCheckedName()} type="text" value={this.props.user.name.value} name="name" onChange={this._onChangeInput} placeholder="Логин"/>
         </div>
         <div>
-        <span className="authorization__alert-text">{this.state.password.message}</span>
-          <input className={'input-default input-default' + this.isCheckedPass()} type="password" value={this.state.password.value} name="password" onChange={this._onChangeInput} placeholder="Пароль"/>
+        <span className="authorization__alert-text">{this.props.user.password.message}</span>
+          <input className={'input-default input-default' + this.isCheckedPass()} type="password" value={this.props.user.password.value} name="password" onChange={this._onChangeInput} placeholder="Пароль"/>
         </div>
         <BtnLogin className='btn-green' title="Назад" clickButton={this._HandleBackHome}/>
         <BtnLogin title="Войти" clickButton={this._HandleLogin}/>
@@ -147,8 +92,8 @@ class Authorization extends Component {
             <meta charSet="utf-8" />
             <title>Авторизация</title>
         </Helmet>
-        {this.state.load
-          ? <Preloader time={this.state.time} end={() => this.load('off')}/>
+        {this.props.user.load
+          ? <Preloader time={this.props.user.time} end={() => this.load('off')}/>
           : template
         }
       </div>
@@ -157,12 +102,18 @@ class Authorization extends Component {
 }
 
 const mapStateToProps = store => ({
-  user: store.get('user')
+  user: store.user
 });
 
 const mapDispatchToProps = dispatch => ({
-  setUser(user) {
-		dispatch(setUser(user));
+  setUserAsnc(user) {
+		dispatch(createActions.setUserAsnc(user));
+  },
+  setUserData(name, password){
+    dispatch(createActions.setUserData(name, password));
+  },
+  Loading(user) {
+		dispatch(createActions.Loading(user));
 	}
 });
 

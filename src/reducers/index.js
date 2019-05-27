@@ -1,21 +1,22 @@
 import * as types from '../actions/actionTypes';
-import { Map } from 'immutable';
 
-const init = Map({});
+export const userReducer = (state = [], action) => {
+	let newState;
 
-export const userReducer = (state = init, action) => {
 	switch (action.type) {
 		case types.SET_USER:
-			return state.set('user', action.user);
+			newState = {...state, ...action.user};
+			console.log("newState", newState);
+			return newState;
 		default:
 			return state;
 	}
 };
 
-export const optionsReducer = (state = init, action) => {
+export const optionsReducer = (state = [], action) => {
 	switch (action.type) {
 		case types.SET_USER:
-			return state.set('user', action.user);
+			return 'options';
 		default:
 			return state;
 	}

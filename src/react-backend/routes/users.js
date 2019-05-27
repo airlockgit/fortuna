@@ -23,7 +23,10 @@ router.get('/', function(req, res, next) {
         if(users[i].username == username){
           // проверка пароля
           if(users[i].password == password){
-            user.user = users[i];
+            user.user = {
+              id: users[i].id,
+              token: users[i].token
+            };
             user.success = true;
             user.auth = true;
           } else {
