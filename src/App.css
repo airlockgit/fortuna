@@ -1,26 +1,125 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600&subset=cyrillic');
+.input-default {
+  margin-top: 10px;
+  border-radius: 5px;
+  padding: 5px;
+  outline: none;
+  color: grey;
 }
-
+.input-default_red {
+  background: #fbe5e5;
+  border: 1px solid #fbe5e5;
+}
+.input-default_error {
+  background: #fbe5e5;
+  border: 1px solid #f74848;
+}
+.main {
+  background: #0b172a;
+  text-align: center;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  overflow: auto;
+}
+.main-chrom {
+  background-color: #8ffe09;
+}
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 40vmin;
   pointer-events: none;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.header {
+  width: 100%;
 }
-
 .App-link {
   color: #61dafb;
+}
+/*for button*/
+.default_button {
+  display: inline-block;
+  background-color: #f32f2f;
+  border: 1px solid #D8E1E6;
+  border-radius: 4px;
+  padding: 5px 15px;
+  margin: 10px 0px;
+  font-size: 16px;
+  letter-spacing: 0;
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+  color: #FFFFFF;
+  outline: none;
+  cursor: pointer;
+}
+.btn-green {
+  margin-right: 13px;
+  background-color: #00a91c;
+}
+.dashboard {
+  background-color: white;
+  border-radius: 10px;
+  width: 400px;
+  min-height: 500px;
+}
+.home-authoriz__list {
+  list-style-type: none;
+  padding: 0px;
+}
+.home-authoriz__list-item {
+  display: inline-block;
+}
+.home-authoriz__link {
+  display: inline-block;
+  text-decoration: none;
+  padding-left: 22px;
+  padding-right: 22px;
+  min-height: 52px;
+  font-size: 19px;
+  line-height: 50px;
+  color: #4e4e4e;
+  border-radius: 26px;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+.home-authoriz__link_login {
+  background: #f36c6c;
+  color: #ffffff;
+  margin-top: 15px;
+}
+.home-authoriz__link_reg {
+  text-decoration: underline;
+}
+.home-authoriz__link_txt {
+  display: block;
+  color: #4e4e4e;
+  margin-top: 15px;
+}
+.authorization__description {
+  padding: 0px 20px;
+}
+.authorization__alert-text {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  color: #f74848;
+}
+.preloader {
+  height: auto;
+}
+.preloader__title {
+  display: inline-block;
+  font-size: 22px;
+  font-weight: 600;
+  padding: 40px;
 }
 
 @keyframes App-logo-spin {

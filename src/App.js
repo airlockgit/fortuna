@@ -1,28 +1,56 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import {Helmet} from "react-helmet";
+import { connect } from 'react-redux';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import Authorization from './containers/authorization';
 import './App.css';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Router>
+        <Helmet>
+            <meta charSet="utf-8" />
+            <title>Фортуна - коробка с предсказаниями</title>
+        </Helmet>
+        <div className="main main-chrom">
+          <div className="dashboard">
+            <header className="header">
+              <h1>Фортуна</h1> 
+            </header>
+            <Route exact path="/" component={Home} />
+            <Route path="/login" component={Authorization} />
+          </div>
+        </div>
+      </Router>
     );
   }
 }
 
-export default App;
+function Home() {
+  return (
+    <div className="home-authoriz">
+      <p>Авторизуйтесь или зарегестрируйтесь, что бы управлять коробкой с предсказаниями</p>
+      <ul className="home-authoriz__list">
+        <li className="home-authoriz__list-item">
+          <Link className="home-authoriz__link home-authoriz__link_login" to="/login">Авторизация</Link>
+        </li>
+        <li>
+          <span className="home-authoriz__link_txt">или</span>
+        </li>
+        <li className="home-authoriz__list-item">
+          <Link className="home-authoriz__link home-authoriz__link_reg" to="/reg">Регистрация</Link>
+        </li>
+      </ul>
+    </div>
+  );
+}
+
+const mapStateToProps = function(store) {
+  return {
+    page: store.page,
+    homePage: store.homePage
+  };
+}
+
+export default connect(mapStateToProps)(App);
