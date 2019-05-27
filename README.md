@@ -1,5 +1,13 @@
-<<<<<<< HEAD
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# fortuna
+F: Reactjs redux, B: nodejs express
+
+## Available Server
+
+In the /src/react-backend/, you can run:
+
+### `npm start`
+
+Open [http://localhost:3001](http://localhost:3001) to view it in the browser.
 
 ## Available Scripts
 
@@ -65,9 +73,3 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/ad
 This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
 
 ### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
-=======
-# fortuna
-F: Reactjs redux, B: nodejs express
->>>>>>> 6ffa4c703781792f8e02054080f8eede093b0d31
