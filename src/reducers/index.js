@@ -6,7 +6,7 @@ export const userReducer = (state = [], action) => {
 	switch (action.type) {
 		case types.SET_USER:
 			newState = {...state, ...action.user};
-			console.log("newState", newState);
+			//console.log("newState", newState);
 			return newState;
 		default:
 			return state;

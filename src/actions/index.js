@@ -1,17 +1,21 @@
 import * as types from '../actions/actionTypes';
 import axios  from 'axios';
 
-export const setUserAsnc = () => {//одна авторизация для каждого сеанса
+export const setUserAsnc = (history) => {//одна авторизация для каждого сеанса
     return (dispath, getState) => {
       const { load, click_count, click_count_max,
       name, password } = getState().user;
 
       //ожидание ответа, попытки ограничены, проверка на корректный пароль и логин
-      if(load || (click_count === click_count_max) || (name.error && password.error)) return;
+      if(load || name.error || password.error) return;
+      if(click_count === click_count_max) {
+        dispath(Loading(true, 5));
+        return;
+      }
       dispath(Loading(true));//preloader
       dispath(setUserCheck(true));//запрос авторизации
 
-      axios.get('/users',{
+      return axios.get('/users',{
         params: {
           username: name.value,
           password: password.value
@@ -33,7 +37,7 @@ export const setUserAsnc = () => {//одна авторизация для ка�
               }
             });
             console.log("Состояние юзера после", getState().user);
-            //this.props.history.push('/profile');
+            history.push('/profile');
           } else {
             if(data.error.username) {//неверное имя
               dispath({
@@ -43,7 +47,13 @@ export const setUserAsnc = () => {//одна авторизация для ка�
                     value: name.value,
                     error: true,
                     message: data.message
-                  }
+                  },
+                  password: {
+                    error: false,
+                    value: password.value,
+                    message: '',
+                  },
+                  click_count: click_count + 1
                 }
               });
             }
@@ -83,10 +93,24 @@ export const setUserData = (user) => ({
   user
 });
 
-export const Loading = (load, time) => ({
+export const Loading = (load, time) => {
+  return dispath => {
+    if(time === 0) {
+      dispath(ClickCount(0));
+    }
+    dispath({
+      type: types.SET_USER,
+      user: {
+        load,
+        time
+      }
+    })
+  }
+};
+
+export const ClickCount = (click_count) => ({
   type: types.SET_USER,
   user: {
-    load,
-    time
+    click_count: click_count
   }
 });

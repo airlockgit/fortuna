@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import {Helmet} from "react-helmet";
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Link } from 'react-router-dom';
 import Authorization from './containers/authorization';
+import Profile from './containers/profile';
 import './App.css';
 
 class App extends Component {
@@ -20,6 +21,7 @@ class App extends Component {
             </header>
             <Route exact path="/" component={Home} />
             <Route path="/login" component={Authorization} />
+            <PrivateRoute path="/profile" authed={this.props.user.auth} component={Profile} />
           </div>
         </div>
       </Router>
@@ -46,10 +48,29 @@ function Home() {
   );
 }
 
+function PrivateRoute({ component: Component, authed, ...rest }) {
+  return (
+    <Route
+      {...rest}
+      render = { props =>
+        authed ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: props.location }
+            }}
+          />
+        )
+      }
+    />
+  );
+}
+
 const mapStateToProps = function(store) {
   return {
-    page: store.page,
-    homePage: store.homePage
+    user: store.user
   };
 }
 

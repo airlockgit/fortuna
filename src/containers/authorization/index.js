@@ -25,7 +25,7 @@ class Authorization extends Component {
   }
 
   _HandleLogin = () => {
-    this.props.setUserAsnc();
+    this.props.setUserAsnc(this.props.history);
   }
 
   _onChangeInput = (e) => {
@@ -40,7 +40,6 @@ class Authorization extends Component {
   }
 
   isChecked(e) {
-    console.log(e.target.value !== '');
     if(e.target.value !== '') {//минимум проверки
       return false;
     } else {
@@ -54,19 +53,6 @@ class Authorization extends Component {
 
   isCheckedPass(){
     return (this.props.user.check && this.props.user.password.error) ? '_error' : '_red';
-  }
-
-  load(type){
-    switch (type){
-      case 'check':
-        if(this.state.click_count > this.click_count_max) {
-          this.setState({load: true, time: 5, click_count: 0});
-          return false;
-        } else {
-          return true;
-        }
-      default: this.setState({load: false});
-    }
   }
 
   render() {
@@ -93,7 +79,7 @@ class Authorization extends Component {
             <title>Авторизация</title>
         </Helmet>
         {this.props.user.load
-          ? <Preloader time={this.props.user.time} end={() => this.load('off')}/>
+          ? <Preloader time={this.props.user.time} end={() => this.props.Loading(false, 0)}/>
           : template
         }
       </div>
@@ -106,14 +92,14 @@ const mapStateToProps = store => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setUserAsnc(user) {
-		dispatch(createActions.setUserAsnc(user));
+  setUserAsnc(history) {
+		dispatch(createActions.setUserAsnc(history));
   },
   setUserData(name, password){
     dispatch(createActions.setUserData(name, password));
   },
-  Loading(user) {
-		dispatch(createActions.Loading(user));
+  Loading(load, time) {
+		dispatch(createActions.Loading(load, time));
 	}
 });
 
