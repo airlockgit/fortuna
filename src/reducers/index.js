@@ -1,19 +1,7 @@
 import * as types from '../actions/actionTypes';
+import initialState from '../store/initState';
 
-export const userReducer = (state = [], action) => {
-	let newState;
-
-	switch (action.type) {
-		case types.SET_USER:
-			newState = {...state, ...action.user};
-			//console.log("newState", newState);
-			return newState;
-		default:
-			return state;
-	}
-};
-
-export const optionsReducer = (state = [], action) => {
+export const profileReducer = (state = initialState.profile, action) => {
 	switch (action.type) {
 		case types.SET_USER:
 			return 'options';

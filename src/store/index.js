@@ -1,45 +1,16 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage/session';
+import storage from 'redux-persist/lib/storage';
 import thunk from 'redux-thunk';
-import { userReducer, optionsReducer } from '../reducers/';
-
-const initialState = {
-  user: {
-    id: '',
-    email: '',
-    token: '',
-    auth: false,
-    name: {
-      value: '',
-      error: true,
-      message: ''
-    }, 
-    password: {
-      value: '',
-      error: true,
-      message: ''
-    },
-    check: false,
-    load: false,
-    click_count: 0,
-    click_count_max: 5,
-    time: 0,//seconds
-  },
-  options: ''
-};
+import { appReducers } from '../reducers/app';
+import initialState from '../store/initState';
 
 const persistConfig = {
   key: 'root',
   storage,
 }
 
-const reducers = combineReducers({
-  user: userReducer,
-  options: optionsReducer
-});
-
-const persistedReducer = persistReducer(persistConfig, reducers);
+const persistedReducer = persistReducer(persistConfig, appReducers);
 
 export const store = createStore(
   persistedReducer,

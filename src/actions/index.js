@@ -26,16 +26,8 @@ export const setUserAsnc = (history) => {//одна авторизация дл�
 
           console.log("Ответ сервера", data, data.success);
           if(data.success){
-            const { user, auth } = data;
             console.log("Состояние юзера до", getState().user);
-            dispath({
-              type: types.SET_USER,
-              user: {
-                id: user.id,
-                auth: auth,
-                token: user.token
-              }
-            });
+            dispath(setAuth(data));
             console.log("Состояние юзера после", getState().user);
             history.push('/profile');
           } else {
@@ -80,6 +72,17 @@ export const setUserAsnc = (history) => {//одна авторизация дл�
         })
     }
   };
+
+const setAuth = (props) => ({
+  type: types.SET_AUTH,
+  payload: {
+    ...props
+  }
+});
+
+export const ResetUser = () => ({
+  type: types.RESET
+});
 
 export const setUserCheck = check => ({
   type: types.SET_USER,

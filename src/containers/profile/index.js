@@ -12,6 +12,10 @@ class Profile extends Component {
 
   }
 
+  _outLogin = ()=> {
+    this.props.ResetUser();
+  }
+
   render(){
       return (
         <div>
@@ -19,25 +23,21 @@ class Profile extends Component {
                 <meta charSet="utf-8" />
                 <title>Личный кабинет</title>
             </Helmet>
+            <BtnLogin title="Выйти" clickButton={()=> this._outLogin()}/>
         </div>
       );
   }
 }
 
 const mapStateToProps = store => ({
-    user: store.user
+    user: store.user,
+    profile: store.profile
   });
   
   const mapDispatchToProps = dispatch => ({
-    setUserAsnc(user) {
-          dispatch(createActions.setUserAsnc(user));
-    },
-    setUserData(name, password){
-      dispatch(createActions.setUserData(name, password));
-    },
-    Loading(load, time) {
-          dispatch(createActions.Loading(load, time));
-      }
+    ResetUser() {
+          dispatch(createActions.ResetUser());
+    }
   });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

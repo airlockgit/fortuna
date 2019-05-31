@@ -6,9 +6,11 @@ import * as createActions from '../../actions';
 import Preloader from '../../components/preloader';
 
 
-class Authorization extends Component {
+class Authorization extends Component {///login
   constructor(props){
     super(props);
+
+    if(props.user.auth) props.history.push('/profile');///если авторизован
 
     this.state = {
       name: {
@@ -56,11 +58,12 @@ class Authorization extends Component {
   }
 
   render() {
+    console.log(this.props.user);
     const template = (
       <div className="authorization">
         <p className="authorization__description">Войдити, что бы получить доступ к личному кабинету</p>
         <div>
-          <span className="authorization__alert-text">{this.props.user.name.message}</span>
+          <span className="authorization__alert-text">{this.props.user.name.message || ''}</span>
           <input className={'input-default input-default' + this.isCheckedName()} type="text" value={this.props.user.name.value} name="name" onChange={this._onChangeInput} placeholder="Логин"/>
         </div>
         <div>
