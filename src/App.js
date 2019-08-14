@@ -10,7 +10,7 @@ import './App.css';
 class App extends Component {
   render() {
     return (
-      <Dashbord>
+      <Dashbord profile={this.props.profile}>
         <Router>
             <Route exact path="/" component={Home} />
             <Route path="/login" component={Authorization} />
@@ -68,7 +68,8 @@ function PrivateRoute({ component: Component, authed, ...rest }) {
 
 const mapStateToProps = function(store) {
   return {
-    user: store.user
+    user: store.user,
+    profile: store.profile
   };
 }
 

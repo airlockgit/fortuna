@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import {Helmet} from "react-helmet";
 import { connect } from 'react-redux';
-import { BtnLogin } from '../../components/btn';
+import { Button } from '../../components/btn';
 import * as createActions from '../../actions';
+import * as profileActions from '../../actions/profile';
 import Preloader from '../../components/preloader';
+import '../../containers/profile/style.css';
 
 
 class Profile extends Component {
@@ -12,18 +14,27 @@ class Profile extends Component {
 
   }
 
-  _outLogin = ()=> {
+  _outLogin = () => {
     this.props.ResetUser();
+  }
+
+  _switchWidget = () => {
+    let widgetType = this.props.profile.widget ? false : true;
+
+    this.props.setWidget(widgetType);
   }
 
   render(){
       return (
-        <div>
+        <div className="profile">
             <Helmet>
                 <meta charSet="utf-8" />
                 <title>Личный кабинет</title>
             </Helmet>
-            <BtnLogin title="Выйти" clickButton={()=> this._outLogin()}/>
+            <div className="profile__switch-widget-button" title="Переключить в полноэкранный режим" onClick={this._switchWidget}></div>
+            <div className="profile__bord">
+            </div>
+            <Button title="Выйти" clickButton={this._outLogin}/>
         </div>
       );
   }
@@ -37,7 +48,10 @@ const mapStateToProps = store => ({
   const mapDispatchToProps = dispatch => ({
     ResetUser() {
           dispatch(createActions.ResetUser());
-    }
+    },
+    setWidget(widget) {
+      dispatch(profileActions.setWidget(widget));
+}
   });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

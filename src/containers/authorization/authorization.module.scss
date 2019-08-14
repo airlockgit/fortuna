@@ -1,0 +1,35 @@
+.section {
+
+}
+
+.description {
+  padding: 0px 20px;
+}
+
+.alertText {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  color: #f74848;
+}
+
+.inputDefault {
+  margin-top: 10px;
+  border-radius: 5px;
+  padding: 5px;
+  outline: none;
+  color: grey;
+}
+.inputDefault_red {
+  background: #fbe5e5;
+  border: 1px solid #fbe5e5;
+}
+.inputDefault_error {
+  background: #fbe5e5;
+  border: 1px solid #f74848;
+}
+
+.btnGreen {
+  margin-right: 13px;
+  background-color: #00a91c;
+}

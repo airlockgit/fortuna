@@ -1,26 +1,27 @@
 import React, { Component } from 'react';
+import classNames from 'classnames/bind';
 import PropTypes from "prop-types";
+import styled from './button.module.scss';
 
-export class BtnLogin extends Component {
+export class Button extends Component {
   static propTypes = {
-       title: PropTypes.string,
-       clickButton: PropTypes.func,
-       className: PropTypes.string,
-   };
+    title: PropTypes.string,
+    clickButton: PropTypes.func,
+    className: PropTypes.string,
+  };
 
   _onClickButton = () => {
-    if(typeof this.props.clickButton === 'function') {
+    if (typeof this.props.clickButton === 'function') {
       this.props.clickButton();
     }
   }
 
   render() {
-    let title = this.props.title != null ? this.props.title : 'title=';
-    let className = this.props.className != null ? this.props.className : '';
+    let { title = 'Название кнопки', classes = {} } = this.props;
 
     return (
-      <span className="btn-white">
-        <button className={className + ' default_button'} type="submit" onClick={this._onClickButton}>{title}</button>
+      <span className={classNames(styled.container, classes.container)}>
+        <button className={classNames(styled.default, classes.button)} type="submit" onClick={this._onClickButton}>{title}</button>
       </span>
     );
   }
