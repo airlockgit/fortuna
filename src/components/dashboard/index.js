@@ -7,7 +7,9 @@ function Dashbord(props) {
         <div className={"main " + widget}>
             <div className="dashboard">
                 <header className="header">
-                    <h1>Фортуна</h1> 
+                    {
+                        props.profile.widget ? <h1>Фортуна</h1> : null
+                    } 
                 </header>
                 {props.children}
             </div>

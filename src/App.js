@@ -1,20 +1,24 @@
 import React, { Component } from 'react';
-import {Helmet} from "react-helmet";
+import { Helmet } from "react-helmet";
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Redirect, Route, Link } from 'react-router-dom';
 import Authorization from './containers/authorization';
 import Dashbord from './components/dashboard';
 import Profile from './containers/profile';
+import Forecast from './containers/forecast';
 import './App.css';
 
 class App extends Component {
   render() {
+    const { auth } = this.props.user;
+
     return (
       <Dashbord profile={this.props.profile}>
         <Router>
-            <Route exact path="/" component={Home} />
-            <Route path="/login" component={Authorization} />
-            <PrivateRoute path="/profile" authed={this.props.user.auth} component={Profile} />
+          <Route exact path="/" component={Home} />
+          <Route path="/login" component={Authorization} />
+          <PrivateRoute path="/profile" authed={auth} component={Profile} />
+          <PrivateRoute path="/forecast" authed={auth} component={Forecast} />
         </Router>
       </Dashbord>
     );
@@ -50,23 +54,23 @@ function PrivateRoute({ component: Component, authed, ...rest }) {
   return (
     <Route
       {...rest}
-      render = { props =>
+      render={props =>
         authed ? (
           <Component {...props} />
         ) : (
-          <Redirect
-            to={{
-              pathname: "/login",
-              state: { from: props.location }
-            }}
-          />
-        )
+            <Redirect
+              to={{
+                pathname: "/login",
+                state: { from: props.location }
+              }}
+            />
+          )
       }
     />
   );
 }
 
-const mapStateToProps = function(store) {
+const mapStateToProps = function (store) {
   return {
     user: store.user,
     profile: store.profile

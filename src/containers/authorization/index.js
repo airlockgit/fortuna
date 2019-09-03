@@ -80,8 +80,8 @@ class Authorization extends Component {///login
             inputDefault_red: !this.isCheckedPass(),
           })} type="password" value={this.props.user.password.value} name="password" onChange={this._onChangeInput} placeholder="Пароль" />
         </div>
-        <Button classes={{ button: styled.btnGreen }} title="Назад" clickButton={this._HandleBackHome} />
-        <Button title="Войти" clickButton={this._HandleLogin} />
+        <Button classes={{ button: styled.btnGreen }} title="Назад" click={this._HandleBackHome} />
+        <Button title="Войти" click={this._HandleLogin} />
       </div>
     )
   }

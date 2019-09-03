@@ -12,12 +12,12 @@ export class Button extends Component {
 
   _onClickButton = () => {
     if (typeof this.props.clickButton === 'function') {
-      this.props.clickButton();
+      this.props.click();
     }
   }
 
   render() {
-    let { title = 'Название кнопки', classes = {} } = this.props;
+    let { title = 'Название кнопки!', classes = {} } = this.props;
 
     return (
       <span className={classNames(styled.container, classes.container)}>

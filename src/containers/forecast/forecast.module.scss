@@ -1,0 +1,27 @@
+.container {
+}
+
+.bord {
+}
+
+.switchWidgetButton {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: -1px;
+    right: -1px;
+    border-radius: 0px 10px 0px 10px;
+    background: orange;
+    cursor: pointer;
+}
+
+.switchWidgetEdit {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: -1px;
+    дуае: -1px;
+    border-radius: 10px 0px 10px 0px;
+    background: orange;
+    cursor: pointer;
+}
