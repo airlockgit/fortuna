@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { useClientRect } from '../hooks';
 import classNames from 'classnames/bind';
 import PropTypes from "prop-types";
 import styled from './button.module.scss';
@@ -6,23 +7,27 @@ import styled from './button.module.scss';
 export class Button extends Component {
   static propTypes = {
     title: PropTypes.string,
-    clickButton: PropTypes.func,
+    click: PropTypes.func,
     className: PropTypes.string,
   };
 
-  _onClickButton = () => {
-    if (typeof this.props.clickButton === 'function') {
-      this.props.click();
-    }
-  }
-
   render() {
-    let { title = 'Название кнопки!', classes = {} } = this.props;
-
     return (
-      <span className={classNames(styled.container, classes.container)}>
-        <button className={classNames(styled.default, classes.button)} type="submit" onClick={this._onClickButton}>{title}</button>
-      </span>
+      <ButtonTemp {...this.props} />
     );
   }
 }
+
+const ButtonTemp = ({ title = 'Название кнопки!', classes = {}, click }) => {
+  const _onClickButton = () => {
+    click();
+  }
+
+  const [rect, ref] = useClientRect();
+
+  return (
+    <div className={classNames(styled.container, classes.container)}>
+      <button ref={ref} className={classNames(styled.default, classes.button)} type="submit" onClick={_onClickButton}>{title}</button>
+    </div>
+  )
+};

@@ -17,6 +17,7 @@ class Profile extends Component {
 
 
   _outLogin = () => {
+    console.log('sdsd');
     this.props.ResetUser();
   }
 

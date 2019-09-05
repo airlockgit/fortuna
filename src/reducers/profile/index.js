@@ -1,5 +1,5 @@
-import * as types from '../actions/actionTypes';
-import initialState from '../store/initState';
+import * as types from '../../actions/actionTypes';
+import initialState from '../../store/initState';
 
 export const profileReducer = (state = initialState.profile, action) => {
 	let newState;
