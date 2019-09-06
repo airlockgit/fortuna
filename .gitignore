@@ -2,6 +2,7 @@
 
 # dependencies
 /src/react-backend/node_modules
+/src/react-backend/data/cast.json
 /src/.vscode
 /node_modules
 /.pnp
