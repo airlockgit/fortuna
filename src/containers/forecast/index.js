@@ -3,12 +3,10 @@ import { Helmet } from "react-helmet";
 import { connect } from 'react-redux';
 import { Button } from '../../components/btn';
 import { Link } from 'react-router-dom';
-import * as createActions from '../../actions';
 import * as profileActions from '../../actions/profile';
 import Preloader from '../../components/preloader';
-import axios from 'axios';
+import Todos from '../../components/todos';
 import styled from './forecast.module.scss';
-
 
 class Forecast extends Component {
     constructor(props) {
@@ -17,17 +15,6 @@ class Forecast extends Component {
         this.state = {
             forecast: [],
         }
-    }
-
-    async getCast() {
-        let response = await axios.get('/forecast');
-        let { data } = response;
-
-        this.setState({ forecast: data })
-    }
-
-    componentDidMount() {
-        this.getCast()
     }
 
     _goBack = () => {
@@ -50,29 +37,15 @@ class Forecast extends Component {
                 {
                     !this.props.profile.widget ? null
                         : (
-                            <div className={styled.bord}>
-                                Редактирутйте предсказания:
+                            <>
+                                <div className={styled.bord}>
+                                    Редактирутйте предсказания:
                             </div>
-                        )
-                }
-                <div>
-                    {
-                        this.state.forecast.map((cast, i) => (
-                            <div key={i}>
-                                <div>
-                                    {cast.title} № {cast.id}
-                                </div>
-                                <div>
-                                    {cast.text}
-                                </div>
-                            </div>
-                        ))
-                    }
-                </div>
-                {
-                    !this.props.profile.widget ? null
-                        : (
-                            <Button title="Назад" click={this._goBack} />
+                                <Todos placeholder='Новое предсказание' />
+                                <Link to="/profile">
+                                    <Button title="Назад" click={this._goBack} />
+                                </Link>
+                            </>
                         )
                 }
             </div>
@@ -82,13 +55,14 @@ class Forecast extends Component {
 
 const mapStateToProps = store => ({
     user: store.user,
-    profile: store.profile
+    profile: store.profile,
+    forecast: store.forecast,
 });
 
 const mapDispatchToProps = dispatch => ({
     setWidget(widget) {
         dispatch(profileActions.setWidget(widget));
-    }
+    },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Forecast);
