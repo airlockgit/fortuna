@@ -1,0 +1,97 @@
+@import '../../common/variables.scss';
+
+.container {
+    padding: 20px;
+}
+.grid {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+
+    @media (max-width: $media-mobile) {
+        flex-direction: column;
+    }
+
+    &Item {
+        display: flex;
+        align-items: center;
+        flex: 0.8;
+
+        &Button {
+            composes: gridItem;
+            flex: 0.2;
+        }
+    }
+}
+
+span.checkbox {
+    padding: 0px;
+    margin: 0px 10px 0px 0px;
+}
+
+.list {
+    padding: 10px 20px;
+
+    &Item {
+        display: flex;
+        align-items: center;
+        padding: 10px 0px;
+
+        &Title {
+            width: 100%;
+            padding: 4px 7px 4px 7px;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            outline: none;
+            text-align: left;
+
+            &:focus {
+                border-color: gray;
+            }
+        }
+
+        &Sort {
+            composes: listItem;
+            cursor: pointer;
+
+            &_active {
+                color: blue;
+            }
+        }
+
+        &Edit {
+            width: 17px;
+            height: 17px;
+            margin-left: 10px;
+            background-image: url('/img/todos/edit.png');
+            background-position: center;
+            background-size: contain;
+            background-repeat: no-repeat;
+            cursor: pointer;
+        }
+
+        &Close {
+            color: red;
+            padding-left: 15px;
+            margin-left: auto;
+            cursor: pointer;
+        }
+    }
+}
+
+div.input {
+    width: 100%;
+    margin-right: 20px;
+
+    @media (max-width: $media-mobile) {
+        margin: 0px 0px 20px 0px;
+    }
+}
+
+.button {
+    width: 100%;
+
+    &Add {
+        composes: button;
+    }
+}

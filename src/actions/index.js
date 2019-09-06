@@ -24,11 +24,8 @@ export const setUserAsnc = (history) => {//одна авторизация дл�
         .then(response => {
           let { data } = response;
 
-          console.log("Ответ сервера", data, data.success);
           if(data.success){
-            console.log("Состояние юзера до", getState().user);
             dispath(setAuth(data));
-            console.log("Состояние юзера после", getState().user);
             history.push('/profile');
           } else {
             if(data.error.username) {//неверное имя

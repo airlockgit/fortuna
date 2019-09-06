@@ -23,6 +23,10 @@ const initialState = {
     profile: {
         widget: false,
         pay: false
+    },
+    forecast: {
+      list: [],
+      id: null,
     }
   };
 
