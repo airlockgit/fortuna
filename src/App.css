@@ -11,10 +11,10 @@
   align-items: center;
   align-content: center;
   justify-content: center;
-  overflow: auto;
+  overflow: hidden;
 }
 .main-chrom {
-  background-color: #8ffe09;
+  background-color: transparent;
 }
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
@@ -29,10 +29,9 @@
 }
 .dashboard {
   position: relative;
-  background-color: white;
+  background-color: transparent;
   border-radius: 10px;
   width: 400px;
-  min-height: 500px;
 }
 .home-authoriz__list {
   list-style-type: none;

@@ -7,7 +7,7 @@ import initialState from '../store/initState';
 
 const persistConfig = {
   key: 'root',
-  storage,
+  storage: storage,
 }
 
 const persistedReducer = persistReducer(persistConfig, appReducers);

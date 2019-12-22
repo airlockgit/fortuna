@@ -30,11 +30,11 @@ class Todos extends Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.todos !== prevProps.todos) {
-            console.log('Обновились');
             axios.put('/forecast/update', {
                 data: {
                     id: this.props.user.id,
                     list: this.props.todos,
+                    start: this.props.start,
                 }
             });
         }
@@ -105,12 +105,11 @@ class Todos extends Component {
     }
 
     render() {
-        console.log(this.props)
-        const { todos } = this.props;
+        const { todos, classes = {} } = this.props;
         let newTodos = this.sortTodos(todos);
 
         return (
-            <div className={styled.container}>
+            <div className={classNames(styled.container, classes.container)}>
                 <div className={styled.grid}>
                     <div className={styled.gridItem}>
                         <TextField
@@ -176,6 +175,7 @@ class Todos extends Component {
 
 const mapStateToProps = store => ({
     todos: [...store.forecast.list],
+    start: store.forecast.start,
     id: store.forecast.id,
     user: store.user,
 });

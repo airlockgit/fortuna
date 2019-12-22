@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Button } from '../../components/btn';
 import { Link } from 'react-router-dom';
 import * as profileActions from '../../actions/profile';
+import * as forecastActions from '../../actions/forecast';
 import Preloader from '../../components/preloader';
 import Todos from '../../components/todos';
 import styled from './forecast.module.scss';
@@ -21,6 +22,11 @@ class Forecast extends Component {
 
     }
 
+    _start = () => {
+        this.props.start();
+        console.log('start', this.props.forecast);
+    }
+
     _switchWidget = () => {
         this.props.setWidget(!this.props.profile.widget);
     }
@@ -34,20 +40,16 @@ class Forecast extends Component {
                 </Helmet>
                 <div className={styled.switchWidgetButton} title="Переключить в режим виджета" onClick={this._switchWidget}></div>
                 <div className={styled.switchWidgetEdit} title="Переключить в режим виджета"></div>
-                {
-                    !this.props.profile.widget ? null
-                        : (
-                            <>
-                                <div className={styled.bord}>
-                                    Редактирутйте предсказания:
-                            </div>
-                                <Todos placeholder='Новое предсказание' />
-                                <Link to="/profile">
-                                    <Button title="Назад" click={this._goBack} />
-                                </Link>
-                            </>
-                        )
-                }
+                <div className={styled.bord}>
+                    Редактирутйте предсказания: {this.props.forecast.list.length}
+                </div>
+                <div>
+                    <Todos classes={{ container: styled.forecast__container }} placeholder='Новое предсказание' />
+                </div>
+                <Link to="/profile">
+                    <Button title="Назад" click={this._goBack} />
+                </Link>
+                <Button title="Старт" click={this._start} />
             </div>
         );
     }
@@ -63,6 +65,9 @@ const mapDispatchToProps = dispatch => ({
     setWidget(widget) {
         dispatch(profileActions.setWidget(widget));
     },
+    start() {
+        dispatch(forecastActions.start())
+    }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Forecast);

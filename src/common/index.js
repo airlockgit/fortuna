@@ -1,0 +1,1 @@
+export const random = (list) => (list[Math.floor(Math.random() * list.length)]);//random for array

@@ -22,11 +22,21 @@ const initialState = {
     },
     profile: {
         widget: false,
-        pay: false
+        pay: false,
+        donations: {
+          donationalerts: {
+            enable: false,
+            access_token: null,
+            refresh_token: null,
+            token_type: 'Bearer',
+            expires_in: null,
+          }
+        }
     },
     forecast: {
       list: [],
       id: null,
+      start: false,
     }
   };
 

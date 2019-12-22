@@ -1,0 +1,29 @@
+.container {
+    display: flex;
+    align-items: center;
+    height: 115ch;
+    justify-content: center;
+    background-color:transparent;
+}
+
+.box {
+    width: 300px;
+    font-size: 30px;
+    padding: 10px;
+    border-radius: 10px;
+    background: white;
+    cursor: pointer;
+
+    &_win {
+        composes: box;
+        border: 5px solid orange;
+    }
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+}

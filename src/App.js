@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Helmet } from "react-helmet";
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Redirect, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Switch, Redirect, Route, Link } from 'react-router-dom';
 import Authorization from './containers/authorization';
-import Dashbord from './components/dashboard';
+import { Dashbord } from './components/dashboard';
+import { Header } from './components/header';
 import Profile from './containers/profile';
 import Forecast from './containers/forecast';
+import ForecastView from './containers/forecast-view-page';
 import './App.css';
 
 class App extends Component {
@@ -13,14 +15,20 @@ class App extends Component {
     const { auth } = this.props.user;
 
     return (
-      <Dashbord profile={this.props.profile}>
-        <Router>
-          <Route exact path="/" component={Home} />
-          <Route path="/login" component={Authorization} />
-          <PrivateRoute path="/profile" authed={auth} component={Profile} />
-          <PrivateRoute path="/forecast" authed={auth} component={Forecast} />
-        </Router>
-      </Dashbord>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/widget/forecast/:token?" children={<ForecastView />} />
+          <>
+            <Header title='Фортуна' />
+            <Dashbord profile={this.props.profile}>
+              <Route exact path="/" component={Home} />
+              <Route path="/profile" component={Profile} />
+              <Route path="/login" component={Authorization} />
+              <PrivateRoute path="/forecast" authed={auth} component={Forecast} />
+            </Dashbord>
+          </>
+        </Switch>
+      </BrowserRouter>
     );
   }
 }

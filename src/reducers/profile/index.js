@@ -2,20 +2,29 @@ import * as types from '../../actions/actionTypes';
 import initialState from '../../store/initState';
 
 export const profileReducer = (state = initialState.profile, action) => {
-	let newState;
+	let newState = state;
 
 	switch (action.type) {
 		case types.PROFILE_SET_WIDGET:
-				newState = {
-					...state,
-					widget: action.widget
+			newState = {
+				...state,
+				widget: action.widget
+			}
+			break;
+		case types.PROFILE_SET_DONATIONALERTS:
+			newState = {
+				...state,
+				donations: {
+					donationalerts: action.options,
 				}
-			return newState;
+			}
 			break;
 		case types.SET_USER:
-			return 'options';
 			break;
 		default:
 			return state;
+			break;
 	}
+
+	return newState;
 };

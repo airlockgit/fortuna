@@ -1,20 +1,17 @@
 import React from 'react';
 
-function Dashbord(props) {
-    let widget = props.profile.widget ? 'main-chrom-widget' : 'main-chrom';
+export const Dashbord = ({ children, profile, title = false }) => {
+    const { widget } = profile;
+    let classes__widget = widget ? 'main-chrom-widget' : 'main-chrom';
 
     return (
-        <div className={"main " + widget}>
+        <div className={"main " + classes__widget}>
             <div className="dashboard">
-                <header className="header">
-                    {
-                        props.profile.widget ? <h1>Фортуна</h1> : null
-                    } 
-                </header>
-                {props.children}
+                {
+                    title ? <h2>Фортуна</h2> : null
+                }
+                {children}
             </div>
-      </div>
+        </div>
     );
-  }
-
-  export default Dashbord;
+}

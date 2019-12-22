@@ -43,6 +43,12 @@ const forecastReducer = (state = initialState.forecast, action) => {
                 ...state,
                 isLoading: !state.isLoading,
             };
+        case 'START':
+            console.log('reducers', state)
+            return {
+                ...state,
+                start: action.start,
+            };
         default:
             return state;
     }

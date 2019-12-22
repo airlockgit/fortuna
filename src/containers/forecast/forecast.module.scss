@@ -25,3 +25,10 @@
     background: orange;
     cursor: pointer;
 }
+
+.forecast {
+    &__container {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+}

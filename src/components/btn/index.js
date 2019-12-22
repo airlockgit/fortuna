@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { useClientRect } from '../hooks';
+import { useClientRect } from '../../hooks';
 import classNames from 'classnames/bind';
 import PropTypes from "prop-types";
 import styled from './button.module.scss';

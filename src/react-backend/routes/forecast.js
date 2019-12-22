@@ -1,24 +1,63 @@
 var express = require('express');
 var router = express.Router();
 var fs = require("fs");
+var request = require('request');
 
 /* GET forecast. */
-const Forecast = async ({ id }) => {
+const Forecast = async ({ id, token = false }) => {
     let data = await fs.readFileSync("./data/cast.json", "utf8");
 
     data = await JSON.parse(data);
-    data = data.find(forecast => forecast.id == id);
+    if (token) {
+        data = data.find(forecast => forecast.token == token);
+    } else {
+        data = data.find(forecast => forecast.id == id);
+    }
 
     return data;
 };
 
 router.get('/', async (req, res, next) => {
-    let { user_id } = req.query;
-    let data = await fs.readFileSync("./data/cast.json", "utf8");
+    let data = await Forecast(req.query);
 
-    data = await JSON.parse(data);
-    data = data.find(forecast => forecast.id == user_id);
     res.status(200).send(data.forecast.list);
+});
+
+router.get('/donations/token', async (req, res, next) => {//www.donationalerts.com
+    ///получаем token, потом меняем его на socket_connection_token для centrifugo
+    request.post({
+        url: 'https://www.donationalerts.com/oauth/token',
+        form: {
+            grant_type: 'authorization_code',
+            client_id: 230,
+            client_secret: '7q9vLP4rx43CxLCRQrBAIn82DZjs1z0zQd0pPiYA',
+            redirect_uri: 'http://localhost:3000/profile',
+            code: req.query.code,
+        },
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+    }, async (err, response, body) => {
+        const data = await JSON.parse(body);
+        const token = await data.access_token;
+        console.log('access_token', token);
+        request.get({
+            url: 'https://www.donationalerts.com/api/v1/user/oauth',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+            },
+        }, (err, response, body) => {
+            body.data.token = token;
+            res.status(200).send(body);
+        });
+    });
+});
+
+router.get('/start/:token', async (req, res, next) => {
+    //console.log(req)
+    let data = await Forecast(req.params);
+
+    res.status(200).send(data.forecast);
 });
 
 router.get('/users/:id', async (req, res, next) => {

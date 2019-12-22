@@ -12,7 +12,7 @@ export const add = ({ text, checked = false }) => (
         let response = await axios.get(`/forecast/users/${getState().user.id}`);
 
         let { data } = response;
-        console.log('response', data);
+
         dispath({
             type: ADD_TODO,
             payload: {
@@ -44,7 +44,7 @@ export const getForecast = () => (
         try {
             let response = await axios.get('/forecast', {
                 params: {
-                    user_id: getState().user.id,
+                    id: getState().user.id,
                 }
             });
 
@@ -59,6 +59,16 @@ export const getForecast = () => (
         }
     }
 );
+
+export const start = () => ({
+    type: 'START',
+    start: true,
+});
+
+export const stop = () => ({
+    type: 'START',
+    start: false,
+})
 
 export const Loading = () => ({
     type: LOADING,

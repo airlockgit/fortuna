@@ -2,13 +2,13 @@
   {
     "id": 1,
     "username": "airlock",
-    "token": 6775656563434,
+    "token": 777,
     "password": 123
   },
   {
     "id": 2,
     "username": "smile",
-    "token": 23235454646,
+    "token": 666,
     "password": 123
   }
 ]
