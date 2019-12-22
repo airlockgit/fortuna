@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Subject } from 'rxjs';
+import { AsyncSubject, Subject, Observable } from 'rxjs';
 import { store } from '../../store';
 import { useParams } from "react-router-dom";
 import { connect } from 'react-redux';
@@ -16,6 +16,27 @@ import Centrifuge from "centrifuge";
 const magic = ['Колдую...', 'Ждиииии плз', 'Видишь я занят все еще?', 'Ало че так мало задонатил?', 'давай спать...',
     'Сейчас сейчас...'];
 
+const subject = new Subject();
+
+const service = {
+    join: new Subject(),
+    subscribe: new Subject(),
+}
+
+const messageService = {
+    publish: message => subject.next(message.data),
+    join: message => service.join.next(message),
+    subscribe: context => {
+        //subject.next(context);
+        let interval = setInterval(() => {
+            //console.log('turn 2', turn);
+            service.subscribe.next('alert');
+            //if (turn.length > 5) clearInterval(interval);
+        }, 2000);
+    },
+    getMessage: () => subject.asObservable(),
+};
+
 class ForecastView extends Component {
     constructor(props) {
         super(props);
@@ -31,6 +52,10 @@ class ForecastView extends Component {
     }
 
     componentDidMount() {
+        service.subscribe.subscribe({
+            next: (v) => console.log(`observerA: ${v}`),
+        });
+
         axios.get('/forecast', {
             params: {
                 token: 777,
@@ -51,7 +76,7 @@ class ForecastView extends Component {
 
                 setTimeout(() => {
                     this.turn.shift();
-                    
+
                     this.setState({
                         alert: true,
                     });
@@ -97,7 +122,7 @@ class ForecastView extends Component {
             subscribe: (context) => {
                 // See below description of subscribe callback context format
 
-
+                subject.next(1);
                 console.log('subscribe', context);
                 /*let interval = setInterval(() => {
 
@@ -116,7 +141,7 @@ class ForecastView extends Component {
             }
         }
 
-        centrifuge.subscribe('$alerts:donation_1004938', callbacks);
+        centrifuge.subscribe('$alerts:donation_1004938', messageService);
 
         centrifuge.connect();
     }
