@@ -2,7 +2,6 @@ import React, { Component, createRef } from 'react';
 import { useParams } from "react-router-dom";
 import { connect } from 'react-redux';
 import { random } from '../../common';
-import { stop } from '../../actions/forecast';
 import { shake, rotateInUpRight, slideInUp } from 'react-animations';
 import axios from 'axios';
 import classNames from 'classnames';
@@ -13,6 +12,7 @@ import rotateInDownLeft from 'react-animations/lib/rotate-in-down-left';
 import { interval, timer } from 'rxjs';
 import { take, delay } from 'rxjs/operators';
 import { donationAlertsService } from '../../components/donations/donationalerts';
+import { updateForecastMessage } from '../../actions/forecast';
 
 const intervalTimeFromCast = 17000;//время отображения виджита - intervalTimeFromCastDelay
 const intervalTimeFromCastDelay = 2000;//задержка перерд отображением виджита, для анимации
@@ -83,13 +83,22 @@ class ForecastView extends Component {
                 console.log('Добавили', this.turn);
             })*/
 
+        let count = 1;
+
         interval(intervalTimeFromCast)
             .subscribe({
                 next: () => {
                     console.log('update', this.turn);
+                    this.props.updateForecastMessage({
+                        name: 'Донатер ' + count,
+                        text: 'Тебе повезет сегодня!',
+                    });
+                    count++;
                     this.setState({
                         alert: false,
                     });
+
+                    console.log('Последнии предсказания', this.props.last_message);
 
                     timer(intervalTimeFromCastDelay)
                         .subscribe(() => {
@@ -152,6 +161,13 @@ class ForecastView extends Component {
 
 const mapStateToProps = store => ({
     forecast: store.forecast.list,
+    last_message: store.forecast.last_message,
 });
 
-export default connect(mapStateToProps)(ForecastView);
+const mapDispatchToProps = dispatch => ({
+    updateForecastMessage(msg) {
+        dispatch(updateForecastMessage(msg))
+    },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ForecastView);

@@ -5,6 +5,8 @@ import {
     DELETE_TODO,
     FORECAST_GET_DATA,
     LOADING,
+    FORECAST_SET_MESSAGE,
+    FORECAST_RESET_MESSAGE,
 } from '../../actions/actionTypes';
 
 const forecastReducer = (state = initialState.forecast, action) => {
@@ -38,6 +40,16 @@ const forecastReducer = (state = initialState.forecast, action) => {
                 ...state,
                 list: action.payload,
             };
+        case FORECAST_SET_MESSAGE:
+            return {
+                ...state,
+                last_message: [...state.last_message, { ...action.payload }],
+            }
+        case FORECAST_RESET_MESSAGE:
+            return {
+                ...state,
+                last_message: initialState.forecast.last_message,
+            }
         case LOADING:
             return {
                 ...state,

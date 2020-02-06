@@ -4,6 +4,8 @@ import {
     DELETE_TODO,
     FORECAST_GET_DATA,
     LOADING,
+    FORECAST_SET_MESSAGE,
+    FORECAST_RESET_MESSAGE,
 } from '../../actions/actionTypes';
 import axios from 'axios';
 
@@ -32,6 +34,31 @@ export const update = ({ id, ...rest }) => ({
     }
 });
 
+export const updateForecastMessage = (last_message) => (
+    async (dispath, getState) => {
+        let count = getState().forecast.last_message.length;//number of posts
+        console.log('actions', count);
+
+        if (count > 20) {
+            return dispath({
+                type: FORECAST_RESET_MESSAGE,
+            })
+                .then(() => (
+                    dispath({
+                        type: FORECAST_SET_MESSAGE,
+                        payload: last_message,
+                    })
+                )
+                );
+        } else {
+            return dispath({
+                type: FORECAST_SET_MESSAGE,
+                payload: last_message,
+            })
+        }
+    }
+);
+
 export const del = (id) => ({
     type: DELETE_TODO,
     payload: {
@@ -50,7 +77,7 @@ export const getForecast = () => (
 
             let { data } = response;
 
-            dispath({
+            return dispath({
                 type: FORECAST_GET_DATA,
                 payload: data,
             })

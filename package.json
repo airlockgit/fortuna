@@ -4,11 +4,13 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.8.0",
+    "@redux-offline/redux-offline": "^2.5.2",
     "aphrodite": "^2.4.0",
     "axios": "^0.18.1",
     "centrifuge": "^2.3.0",
     "classnames": "^2.2.6",
     "immutable": "^4.0.0-rc.12",
+    "localforage": "^1.7.3",
     "mocha": "^6.2.2",
     "next": "^9.1.5",
     "node-sass": "^4.13.0",

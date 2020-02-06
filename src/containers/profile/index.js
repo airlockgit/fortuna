@@ -7,6 +7,7 @@ import axios from 'axios';
 import * as createActions from '../../actions';
 import * as profileActions from '../../actions/profile';
 import Preloader from '../../components/preloader';
+import { persistor } from '../../store';
 
 class Profile extends Component {
   constructor(props) {
@@ -17,8 +18,12 @@ class Profile extends Component {
 
 
   _outLogin = () => {
-    this.props.ResetUser();
-    window.location.href = '/login';
+    persistor.purge()
+      .then(() => {
+        this.props.ResetUser();
+      });
+
+    //window.location.href = '/login';
   }
 
   _donationalertsActivation = () => {
@@ -54,6 +59,7 @@ class Profile extends Component {
   }
 
   render() {
+    if (!this.props.user.auth) window.location.href = '/login';
     this.donationalertsSetOptions();
 
     return (

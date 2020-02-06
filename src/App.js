@@ -8,6 +8,7 @@ import { Header } from './components/header';
 import Profile from './containers/profile';
 import Forecast from './containers/forecast';
 import ForecastView from './containers/forecast-view-page';
+import ForecastLastMessage from './containers/forecast-message-page';
 import './App.css';
 
 class App extends Component {
@@ -17,7 +18,8 @@ class App extends Component {
     return (
       <BrowserRouter>
         <Switch>
-          <Route path="/widget/forecast/:token?" children={<ForecastView />} />
+          <Route path="/widget/forecast/lastcast/:token?" component={ForecastLastMessage} />
+          <Route path="/widget/forecast/:token?" component={ForecastView} />
           <>
             <Header title='Фортуна' />
             <Dashbord profile={this.props.profile}>

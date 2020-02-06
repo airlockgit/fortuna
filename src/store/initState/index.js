@@ -36,7 +36,10 @@ const initialState = {
     forecast: {
       list: [],
       id: null,
-      start: false,
+      last_message: [{
+        name: '',
+        text: 'Сегодня сообщений нет!',
+      }],
     }
   };
 
