@@ -41,9 +41,11 @@ const forecastReducer = (state = initialState.forecast, action) => {
                 list: action.payload,
             };
         case FORECAST_SET_MESSAGE:
+            let last_message = state.last_message ? [...state.last_message, { ...action.payload }] : initialState.forecast.last_message;
+
             return {
                 ...state,
-                last_message: [...state.last_message, { ...action.payload }],
+                last_message,
             }
         case FORECAST_RESET_MESSAGE:
             return {
@@ -56,7 +58,6 @@ const forecastReducer = (state = initialState.forecast, action) => {
                 isLoading: !state.isLoading,
             };
         case 'START':
-            console.log('reducers', state)
             return {
                 ...state,
                 start: action.start,

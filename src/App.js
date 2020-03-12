@@ -18,7 +18,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <Switch>
-          <Route path="/widget/forecast/lastcast/:token?" component={ForecastLastMessage} />
+          <Route path="/widget/forecast/lastcast" component={ForecastLastMessage} />
           <Route path="/widget/forecast/:token?" component={ForecastView} />
           <>
             <Header title='Фортуна' />

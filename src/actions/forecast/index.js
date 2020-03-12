@@ -36,20 +36,18 @@ export const update = ({ id, ...rest }) => ({
 
 export const updateForecastMessage = (last_message) => (
     async (dispath, getState) => {
-        let count = getState().forecast.last_message.length;//number of posts
-        console.log('actions', count);
+        let count = getState().forecast.last_message ? getState().forecast.last_message.length : 0;//number of posts
+        console.log('updateForecastMessage actions count', count);
 
         if (count > 20) {
-            return dispath({
+            await dispath({
                 type: FORECAST_RESET_MESSAGE,
-            })
-                .then(() => (
-                    dispath({
-                        type: FORECAST_SET_MESSAGE,
-                        payload: last_message,
-                    })
-                )
-                );
+            });
+
+            dispath({
+                type: FORECAST_SET_MESSAGE,
+                payload: last_message,
+            });
         } else {
             return dispath({
                 type: FORECAST_SET_MESSAGE,

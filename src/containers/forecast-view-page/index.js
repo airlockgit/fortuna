@@ -14,7 +14,7 @@ import { take, delay } from 'rxjs/operators';
 import { donationAlertsService } from '../../components/donations/donationalerts';
 import { updateForecastMessage } from '../../actions/forecast';
 
-const intervalTimeFromCast = 17000;//время отображения виджита - intervalTimeFromCastDelay
+const intervalTimeFromCast = 20000;//время отображения виджита - intervalTimeFromCastDelay
 const intervalTimeFromCastDelay = 2000;//задержка перерд отображением виджита, для анимации
 
 class ForecastView extends Component {
@@ -43,11 +43,10 @@ class ForecastView extends Component {
 
                 if (this.state.forecast.length < 1) return;//если нет предсказаний
 
-                let cast = [];
-
-                for (let i = 0; i < 5; i++) {
-                    cast.push(username + ', ' + random(this.state.forecast).text);
-                }
+                let cast = {
+                    text: random(this.state.forecast).text,
+                    username,
+                };
 
                 this.turn.push({
                     cast,
@@ -66,15 +65,16 @@ class ForecastView extends Component {
                 })
             });
 
-        /*interval(1000)
+        let count = 1;//name users
+
+        /*interval(1000)//демо предсказаний, добавляется для 5 пользователей
             .pipe(
                 take(5)
             )
             .subscribe(() => {
-                let cast = [];
-
-                for (let i = 0; i < 5; i++) {
-                    cast.push('Tut' + i + ', ' + random(this.state.forecast).text);
+                let cast = {
+                    text: random(this.state.forecast).text,
+                    username: 'Test user ' + count++,
                 }
 
                 this.turn.push({
@@ -83,53 +83,40 @@ class ForecastView extends Component {
                 console.log('Добавили', this.turn);
             })*/
 
-        let count = 1;
-
         interval(intervalTimeFromCast)
             .subscribe({
                 next: () => {
-                    console.log('update', this.turn);
-                    this.props.updateForecastMessage({
-                        name: 'Донатер ' + count,
-                        text: 'Тебе повезет сегодня!',
-                    });
-                    count++;
                     this.setState({
                         alert: false,
                     });
 
-                    console.log('Последнии предсказания', this.props.last_message);
-
                     timer(intervalTimeFromCastDelay)
                         .subscribe(() => {
+                            if (this.turn.length < 1) return;//если нет предсказаний в очереди
+
                             this.setState({
                                 alert: true,
-                            });
+                            }, () => {
+                                const { text, username } = this.turn[0].cast;//первый в очереди
 
-                            this.turn.shift();
+                                this.castText.current.innerHTML = username + ', ' + text;
+
+                                this.props.updateForecastMessage({//сохранение предсказаний для отображения в виджите Последние предсказания
+                                    name: username,
+                                    text,
+                                });
+
+                                this.turn.shift();
+                            });
                         })
                 },
             });
     }
 
-    randomCast = () => {
-        const { cast } = this.turn[0];
-
-        interval(500)
-            .pipe(
-                take(cast.length),
-            )
-            .subscribe({
-                next: () => {
-                    if (this.castText.current) this.castText.current.innerHTML = random(cast);
-                },
-            });
-    }
-
     render() {
-        if (this.turn.length > 0 && this.state.alert) {
-            let { alert } = this.turn[0];
+        let { alert } = this.state;
 
+        if (alert) {
             const styles = {
                 bounce: {
                     animation: '1 1s',
@@ -140,8 +127,6 @@ class ForecastView extends Component {
                     animationName: Radium.keyframes(rotateInUpRight, 'unicorn')
                 },
             }
-
-            this.randomCast();
 
             return (
                 <div className={styled.container} >
